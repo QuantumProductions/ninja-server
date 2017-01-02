@@ -8,8 +8,8 @@
 registration_test() ->
   {ok, Guestbook} = guestbook:start_link(),
   Response = gen_server:call(Guestbook, {register, "Ninja"}),
-  Response = <<"myauth">>,
-  gen_server:call(Guestbook, {validate_auth, "Ninja", <<"myauth">>}).
+  Response = "myauth",
+  gen_server:call(Guestbook, {validate_auth, "Ninja", "myauth"}).
 
 start_link() ->
   gen_server:start_link(?MODULE, [], []).
@@ -21,7 +21,7 @@ generateAuth() ->
   "myauth".
 
 valid(Guestbook, Name, Auth) ->
-  case binary:matches(dict:fetch(Name, Guestbook), Auth) of
+  case string:equal(dict:fetch(Name, Guestbook), Auth) of
   	[] -> false;
   	_ -> true
   end.
