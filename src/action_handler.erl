@@ -23,11 +23,12 @@ init(Req0, Opts) ->
         #{action := Action} = cowboy_req:match_qs([{action, [], undefined}], Req0),
         #{target := Target} = cowboy_req:match_qs([{target, [], undefined}], Req0),
         #{auth := Auth} = cowboy_req:match_qs([{auth, [], undefined}], Req0),
+        AuthString = binary_to_list(Auth),
         NameString = binary_to_list(Name),
         ActionAtom = list_to_atom(binary_to_list(Action)),
         TargetName = binary_to_list(Target),
 
-        case validRequest(NameString, ActionAtom, TargetName, Auth) of
+        case validRequest(NameString, ActionAtom, TargetName, AuthString) of
         	true ->
         	  {ActedGate, _} = gate:action(Gate, {input, {NameString, ActionAtom, TargetName}}),
 		        B = dict:to_list(ActedGate),

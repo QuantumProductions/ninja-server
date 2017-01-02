@@ -21,12 +21,7 @@ generateAuth() ->
   "myauth".
 
 valid(Guestbook, Name, Auth) ->
-  case string:equal(dict:fetch(Name, Guestbook), Auth) of
-  	[] -> false;
-  	_ -> true
-  end.
-
-
+  string:equal(dict:fetch(Name, Guestbook), Auth).
 
 handle_call({register, Name}, _From, State) ->
   Auth = generateAuth(),
