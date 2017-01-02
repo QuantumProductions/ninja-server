@@ -31,14 +31,13 @@ init(Req0, Opts) ->
         case validRequest(NameString, ActionAtom, TargetName, AuthString) of
         	true ->
         	  {ActedGate, _} = gate:action(Gate, {input, {NameString, ActionAtom, TargetName}}),
-		        B = dict:to_list(ActedGate),
-		        R= io_lib:format("~p",[B]),
+		        R= io_lib:format("~p",[ActedGate]),
 		        Req = cowboy_req:reply(200, #{
 		                <<"content-type">> => <<"text/plain">>
 		        }, R, Req0),
 		        {ok, Req, Opts};
         	false ->
-        	  Req = cowboy_req:reply(200, #{
+        	  Req = cowboy_req:reply(400, #{
                 <<"content-type">> => <<"text/plain">>
             }, <<"Invalid Request">>, Req0),
             {ok, Req, Opts}

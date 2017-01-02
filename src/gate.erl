@@ -46,8 +46,8 @@ handle_call({join, Name}, _From, {A, Q}) ->
       {reply, {publicArena(dict:to_list(A2)), GuestAuth}, {A2, Q2}}
   end;
 handle_call({input, {Name, Action, Target}}, _From, Temple) ->
-  NewTemple = temple:input(Temple, Name, Action, Target),
-  {reply, NewTemple, NewTemple};
+  {A2, Q2} = temple:input(Temple, Name, Action, Target),
+  {reply, {publicArena(dict:to_list(A2)), Q2}, {A2, Q2}};
 handle_call({fight}, _From, Temple) ->
   {{RepopulatedArena, UsedQueue}, _Slain} = temple:fight(Temple),
   % broadcast slain
