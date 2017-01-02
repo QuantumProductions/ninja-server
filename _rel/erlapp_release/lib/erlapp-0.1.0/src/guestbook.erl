@@ -18,7 +18,7 @@ init([]) ->
   {ok, dict:new()}.
 
 generateAuth() ->
-  <<"myauth">>.
+  "myauth".
 
 valid(Guestbook, Name, Auth) ->
   case binary:matches(dict:fetch(Name, Guestbook), Auth) of
