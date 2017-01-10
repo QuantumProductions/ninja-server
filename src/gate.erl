@@ -41,7 +41,8 @@ handle_call({join, Name}, _From, {A, Q}) ->
     true ->
       {reply, {A, Q}, {A, Q}};
     false ->
-      GuestAuth = gen_server:call(guestbook, {register, Name}),
+      Guestbook = whereis(guestbook),
+      GuestAuth = gen_server:call(Guestbook, {register, Name}),
       {A2, Q2} = temple:join({A, Q}, Name),
       {reply, {publicArena(dict:to_list(A2)), GuestAuth}, {A2, Q2}}
   end;
@@ -53,9 +54,10 @@ handle_call({fight}, _From, Temple) ->
   % broadcast slain
   NewTemple = {RepopulatedArena, UsedQueue},
   {reply, NewTemple, NewTemple};
-handle_call({validate_auth, _Name, _Auth}, _From, Temple) ->
-  % Valid = gen_server:call(guestbook, {validate_auth, Name, Auth}),
-  {reply, true, Temple};
+handle_call({validate_auth, Name, Auth}, _From, Temple) ->
+  Guestbook = whereis(guestbook),
+  Valid = gen_server:call(Guestbook, {validate_auth, Name, Auth}),
+  {reply, Valid, Temple};
 handle_call(terminate, _From, Temple) ->
   {stop, normal, ok, Temple};
 handle_call(_, _, _) ->

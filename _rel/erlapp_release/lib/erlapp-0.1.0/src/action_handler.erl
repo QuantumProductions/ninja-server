@@ -6,20 +6,21 @@ valid(start, Gate, Name, Auth, Action, Target) ->
     true -> valid(auth, Gate, Name, Auth, Action, Target);
     false -> {error, player_not_fighting}
   end;
-valid(auth, Gate, Name, Auth, _Action, _Target) ->
+valid(auth, Gate, Name, Auth, Action, Target) ->
   case gate:action(Gate, {validate_auth, Name, Auth}) of
-    _ -> {error, invalid_authorization_token}
+    true -> valid(action, Gate, Action, Target);
+    false -> {error, invalid_authorization_token}
   end.
-% valid(action, Gate, Action, Target) ->
-%   case (kill =:= Action) or (counter =:= Action) of
-%     true -> valid(target, Gate, Target);
-%     false -> {error, unsupported_action}
-%   end.
-% valid(target, Gate, Target) ->
-%   case gate:action(Gate, {ninja_fighting, Target}) of
-%     true -> {ok, valid};
-%     false -> {error, target_not_fighting}
-%   end.
+valid(action, Gate, Action, Target) ->
+  case (kill =:= Action) or (counter =:= Action) of
+    true -> valid(target, Gate, Target);
+    false -> {error, unsupported_action}
+  end.
+valid(target, Gate, Target) ->
+  case gate:action(Gate, {ninja_fighting, Target}) of
+    true -> {ok, valid};
+    false -> {error, target_not_fighting}
+  end.
 
 init(Req0, Opts) ->
   Gate = whereis(gate),
@@ -34,7 +35,23 @@ init(Req0, Opts) ->
   ActionAtom = list_to_atom(binary_to_list(Action)),
   TargetName = binary_to_list(Target),
 
+  % case gate:action(Gate, {validate_auth, NameString, AuthString}) of
+  %   true -> 
+  %     Response = "Valid Auth",
+  %     Reply = cowboy_req:reply(200, #{
+  %             <<"content-type">> => <<"text/plain">>
+  %     }, Response, Req0),
+  %     {ok, Reply, Opts};
+  %   false -> 
+  %     Response = "Bad Token",
+  %     Reply = cowboy_req:reply(200, #{
+  %             <<"content-type">> => <<"text/plain">>
+  %     }, Response, Req0),
+  %     {ok, Reply, Opts}
+  % end.
+
   case valid(start, Gate, NameString, AuthString, ActionAtom, TargetName) of
+  % case valid(auth, Gate, NameString, AuthString, ActionAtom, TargetName) of
     {ok, valid} -> 
       {ActedGate, _} = gate:action(Gate, {input, {NameString, ActionAtom, TargetName}}),
       Response = io_lib:format("~p",[ActedGate]),
