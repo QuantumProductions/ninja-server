@@ -1,16 +1,16 @@
 -module(action_handler).
 -export([init/2]).
 
-valid(start, Gate, Name, Auth, Action, Target) ->
-  case gate:action(Gate, {ninja_fighting, Name}) of
-    true -> valid(auth, Gate, Name, Auth, Action, Target);
-    false -> {error, player_not_fighting}
-  end;
-valid(auth, Gate, Name, Auth, Action, Target) ->
-  case gate:action(Gate, {validate_auth, Name, Auth}) of
-    true -> valid(action, Gate, Action, Target);
-    false -> {error, invalid_authorization_token}
-  end.
+% valid(start, Gate, Name, Auth, Action, Target) ->
+%   case gate:action(Gate, {ninja_fighting, Name}) of
+%     true -> valid(auth, Gate, Name, Auth, Action, Target);
+%     false -> {error, player_not_fighting}
+%   end;
+% valid(auth, Gate, Name, Auth, Action, Target) ->
+%   case gate:action(Gate, {validate_auth, Name, Auth}) of
+%     true -> valid(action, Gate, Action, Target);
+%     false -> {error, invalid_authorization_token}
+%   end.
 valid(action, Gate, Action, Target) ->
   case (kill =:= Action) or (counter =:= Action) of
     true -> valid(target, Gate, Target);
@@ -25,16 +25,16 @@ valid(target, Gate, Target) ->
 init(Req0, Opts) ->
   Gate = whereis(gate),
 
-  #{name := Name} = cowboy_req:match_qs([{name, [], undefined}], Req0),
+  #{name := Name} = cowboy_req:match_qs([{name, [], "no_name"}], Req0),
   #{action := Action} = cowboy_req:match_qs([{action, [], undefined}], Req0),
-  #{target := Target} = cowboy_req:match_qs([{target, [], undefined}], Req0),
-  #{auth := Auth} = cowboy_req:match_qs([{auth, [], undefined}], Req0),
-  AuthString = binary_to_list(Auth),
+  #{target := Target} = cowboy_req:match_qs([{target, [], "no_target"}], Req0),
+  % #{auth := Auth} = cowboy_req:match_qs([{auth, [], <<"">>}], Req0),
+  % AuthString = binary_to_list(Auth),
   NameString = binary_to_list(Name),
   ActionAtom = list_to_atom(binary_to_list(Action)),
   TargetName = binary_to_list(Target),
-
-  case valid(start, Gate, NameString, ActionAtom, TargetName, AuthString) of
+  case valid(action, Gate, ActionAtom, TargetName) of
+  % case valid(start, Gate, NameString, ActionAtom, TargetName, AuthString) of
     {ok, valid} -> 
       {ActedGate, _} = gate:action(Gate, {input, {NameString, ActionAtom, TargetName}}),
       Response = io_lib:format("~p",[ActedGate]),
