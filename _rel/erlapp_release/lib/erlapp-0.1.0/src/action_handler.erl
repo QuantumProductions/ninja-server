@@ -35,23 +35,7 @@ init(Req0, Opts) ->
   ActionAtom = list_to_atom(binary_to_list(Action)),
   TargetName = binary_to_list(Target),
 
-  % case gate:action(Gate, {validate_auth, NameString, AuthString}) of
-  %   true -> 
-  %     Response = "Valid Auth",
-  %     Reply = cowboy_req:reply(200, #{
-  %             <<"content-type">> => <<"text/plain">>
-  %     }, Response, Req0),
-  %     {ok, Reply, Opts};
-  %   false -> 
-  %     Response = "Bad Token",
-  %     Reply = cowboy_req:reply(200, #{
-  %             <<"content-type">> => <<"text/plain">>
-  %     }, Response, Req0),
-  %     {ok, Reply, Opts}
-  % end.
-
   case valid(start, Gate, NameString, AuthString, ActionAtom, TargetName) of
-  % case valid(auth, Gate, NameString, AuthString, ActionAtom, TargetName) of
     {ok, valid} -> 
       {ActedGate, _} = gate:action(Gate, {input, {NameString, ActionAtom, TargetName}}),
       Response = io_lib:format("~p",[ActedGate]),
