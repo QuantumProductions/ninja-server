@@ -53,9 +53,9 @@ handle_call({fight}, _From, Temple) ->
   % broadcast slain
   NewTemple = {RepopulatedArena, UsedQueue},
   {reply, NewTemple, NewTemple};
-handle_call({validate_auth, Name, Auth}, _From, Temple) ->
-  Valid = gen_server:call(guestbook, {validate_auth, Name, Auth}),
-  {reply, Valid, Temple};
+handle_call({validate_auth, _Name, _Auth}, _From, Temple) ->
+  % Valid = gen_server:call(guestbook, {validate_auth, Name, Auth}),
+  {reply, true, Temple};
 handle_call(terminate, _From, Temple) ->
   {stop, normal, ok, Temple};
 handle_call(_, _, _) ->

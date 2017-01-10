@@ -1,4 +1,4 @@
-%% script generated at {2017,1,2} {16,32,11}
+%% script generated at {2017,1,10} {15,16,32}
 {script,
     {"erlapp_release","1"},
     [{preLoaded,
@@ -60,7 +60,7 @@
      {path,["$ROOT/lib/erlapp-0.1.0/ebin"]},
      {primLoad,
          [action_handler,arena,erlapp_app,erlapp_sup,gate,guestbook,
-          hello_handler,resolution,temple]},
+          hello_handler,resolution,talk,temple]},
      {path,["$ROOT/lib/sasl-3.0.1/ebin"]},
      {primLoad,
          [alarm_handler,erlsrv,format_lib_supp,misc_supp,rb,rb_format_supp,
@@ -184,7 +184,7 @@
                   [{description,
                        "Support library for manipulating Web protocols."},
                    {vsn,"1.3.0"},
-                   {id,"1.3.0-58-g8e6d0f4-dirty"},
+                   {id,"1.3.0-60-g027941e"},
                    {modules,
                        [cow_cookie,cow_date,cow_hpack,cow_http,cow_http2,
                         cow_http_hd,cow_http_te,cow_mimetypes,cow_multipart,
@@ -224,7 +224,7 @@
                    {id,[]},
                    {modules,
                        [action_handler,arena,erlapp_app,erlapp_sup,gate,
-                        guestbook,hello_handler,resolution,temple]},
+                        guestbook,hello_handler,resolution,talk,temple]},
                    {registered,[erlapp_sup]},
                    {applications,[stdlib,kernel,cowboy]},
                    {included_applications,[]},

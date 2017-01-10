@@ -60,6 +60,7 @@ resolution(A, [First | Rest]) ->
   	Result -> Result
   end;
 
+% Ninja, Action, Target
 resolution({A, _, _}, {A, _, _}) ->
   unresolved;
 resolution({A, counter, B}, {B, kill, A}) ->
