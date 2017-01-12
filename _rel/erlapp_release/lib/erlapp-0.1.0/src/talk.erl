@@ -8,7 +8,7 @@ fac(N) -> N * fac(N - 1).
 %INv, Music, IPS, F, SMS
 % Why erlang
 % Different from other Languages
-% learnyousomeerlan
+% learnyousomeerlang
 % Purely functional, pattern matching, immensely scalable
 
 % Successful Projects: Call of Duty, What's App
@@ -17,25 +17,29 @@ fac(N) -> N * fac(N - 1).
 % https://github.com/quantumproductions
 % http://learnyousomeerlang.com/content
 % https://ninenines.eu/docs/en/cowboy/2.0/guide/getting_started/
+% https://github.com/davisp/jiffy
 
 % Why this project
 % What is the project
 % Demo
 
 % Object Oriented Sucks
+ % hierachy to composition
+ % good message designs, pub & sub architectures
 % Pattern Matching
 
-% Resolution > Arena OBJECT
+% Resolution, counter target == ...
+% > Arena OBJECT
 % points (slayer) > Temple
 % Arena/Temple/Queue
-
-% TODO: Validate request --- with errors
 
 % Cowboy
 % Erlang.mk, gmake
 
 % erlapp_erl, hello_handler
 % reading parameters
-% processes << this is cool
+% processes << this is cool, 3 parts to reply
 
 % JSON branch
+
+% Shoutouts: CL, BA

@@ -56,7 +56,7 @@ errorReply(unsupported_action, Req) ->
   errorReply("Invalid action.", Req);
 errorReply(target_not_fighting, Req) ->
   errorReply("Your target has not yet entered the Arena.", Req);
-errorReply(Error, Req) ->
+errorReply(ErrorText, Req) ->
   cowboy_req:reply(200, #{
     <<"content-type">> => <<"text/plain">>
-  }, Error, Req).
+  }, ErrorText, Req).
